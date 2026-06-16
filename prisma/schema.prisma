@@ -1,0 +1,353 @@
+// Prisma schema for Crescendo Karaoke Lounge
+// Run `npx prisma migrate dev` after setting DATABASE_URL in .env
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Auth (NextAuth.js / Auth.js v5 — Prisma adapter models)
+// ─────────────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  passwordHash  String? // null when the user only signs in via OAuth
+  role          UserRole  @default(CUSTOMER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts     Account[]
+  sessions     Session[]
+  admin        Admin?
+  reservations Reservation[]
+  orders       Order[]
+  reviews      Review[]
+  payments     ReservationPayment[]
+
+  @@index([role])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Extends a User with admin-specific metadata / permission level.
+enum AdminLevel {
+  STAFF
+  MANAGER
+  SUPER_ADMIN
+}
+
+model Admin {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  level     AdminLevel @default(STAFF)
+  createdAt DateTime   @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Rooms
+// ─────────────────────────────────────────────────────────────────────────
+
+model Room {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  description  String   @db.Text
+  capacity     Int
+  pricePerHour Decimal  @db.Decimal(10, 2)
+  amenities    String[] @default([])
+  isActive     Boolean  @default(true)
+  /// minutes; bookings must be a multiple of this
+  minDuration  Int      @default(60)
+  maxDuration  Int      @default(240)
+  /// daily opening/closing time, e.g. "11:00" / "23:30", used for availability windows
+  openTime     String   @default("11:00")
+  closeTime    String   @default("23:30")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  images       RoomImage[]
+  reservations Reservation[]
+  reviews      Review[]
+
+  @@index([isActive])
+}
+
+model RoomImage {
+  id       String @id @default(cuid())
+  roomId   String
+  url      String
+  alt      String @default("")
+  position Int    @default(0)
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  @@index([roomId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Reservations
+// ─────────────────────────────────────────────────────────────────────────
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Reservation {
+  id         String            @id @default(cuid())
+  userId     String
+  roomId     String
+  date       DateTime          @db.Date
+  startTime  DateTime
+  endTime    DateTime
+  guestCount Int
+  status     ReservationStatus @default(PENDING)
+
+  depositAmount Decimal @db.Decimal(10, 2)
+  totalAmount   Decimal @db.Decimal(10, 2)
+
+  notes              String?
+  checkedInAt        DateTime?
+  cancelledAt        DateTime?
+  cancellationReason String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user     User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room     Room                 @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  payments ReservationPayment[]
+  orders   Order[]
+
+  // Fast lookup for availability checks on a given room/day, and for a user's reservation list.
+  @@index([roomId, date])
+  @@index([userId, status])
+  @@index([status])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+model ReservationPayment {
+  id                    String        @id @default(cuid())
+  reservationId         String
+  userId                String
+  stripePaymentIntentId String        @unique
+  amount                Decimal       @db.Decimal(10, 2)
+  currency              String        @default("usd")
+  status                PaymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reservation Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([reservationId])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Menu
+// ─────────────────────────────────────────────────────────────────────────
+
+enum MenuType {
+  FOOD
+  DRINK
+}
+
+model MenuCategory {
+  id       String   @id @default(cuid())
+  name     String
+  slug     String   @unique
+  type     MenuType
+  position Int      @default(0)
+
+  items MenuItem[]
+
+  @@index([type])
+}
+
+model MenuItem {
+  id          String   @id @default(cuid())
+  categoryId  String
+  name        String
+  description String   @db.Text
+  price       Decimal  @db.Decimal(10, 2)
+  imageUrl    String?
+  isAvailable Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  allergens   String[] @default([])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category   MenuCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  orderItems OrderItem[]
+
+  @@index([categoryId])
+  @@index([isAvailable])
+  @@index([isFeatured])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Food Orders
+// ─────────────────────────────────────────────────────────────────────────
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum OrderPaymentStatus {
+  UNPAID
+  PAID
+  REFUNDED
+}
+
+model Order {
+  id            String             @id @default(cuid())
+  userId        String
+  reservationId String?
+  status        OrderStatus        @default(PENDING)
+  paymentStatus OrderPaymentStatus @default(UNPAID)
+
+  totalAmount           Decimal @db.Decimal(10, 2)
+  stripePaymentIntentId String? @unique
+  notes                 String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservation Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+  items       OrderItem[]
+
+  @@index([userId, status])
+  @@index([reservationId])
+  @@index([status])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  menuItemId String
+  quantity   Int     @default(1)
+  unitPrice  Decimal @db.Decimal(10, 2)
+  notes      String?
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItem MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([menuItemId])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Reviews
+// ─────────────────────────────────────────────────────────────────────────
+
+model Review {
+  id          String  @id @default(cuid())
+  userId      String
+  roomId      String?
+  rating      Int
+  comment     String  @db.Text
+  isPublished Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room Room? @relation(fields: [roomId], references: [id], onDelete: SetNull)
+
+  @@index([roomId])
+  @@index([isPublished])
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Site Settings (singleton row — admin-configurable business rules)
+// ─────────────────────────────────────────────────────────────────────────
+
+model SiteSettings {
+  id Int @id @default(1)
+
+  /// percentage of the reservation total required as deposit, e.g. 25.0 = 25%
+  depositPercentage Decimal @default(25.0) @db.Decimal(5, 2)
+  /// hard floor for the deposit regardless of percentage
+  minDepositAmount  Decimal @default(20.0) @db.Decimal(10, 2)
+
+  /// how many hours before the reservation a customer may cancel for a full refund
+  freeCancellationWindowHours Int     @default(24)
+  /// percentage of the deposit retained as a fee for late cancellations
+  lateCancellationFeePercent  Decimal @default(50.0) @db.Decimal(5, 2)
+
+  taxRatePercent Decimal @default(0) @db.Decimal(5, 2)
+  currency       String  @default("usd")
+
+  updatedAt DateTime @updatedAt
+}
