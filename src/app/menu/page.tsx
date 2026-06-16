@@ -7,7 +7,8 @@ export const metadata: Metadata = {
   description: "Shareable plates, signature cocktails, and zero-proof drinks — order ahead or from your room.",
 };
 
-export const revalidate = 60;
+// See page.tsx (home) for why this is force-dynamic rather than ISR.
+export const dynamic = "force-dynamic";
 
 export default async function MenuPage() {
   const [categories, items] = await Promise.all([

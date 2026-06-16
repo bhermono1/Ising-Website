@@ -1,6 +1,11 @@
 import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/prisma";
 
+// Metadata routes are statically generated at build time by default, which
+// would run this Prisma query during the build — same build-time DB
+// dependency issue as the dynamic pages (see app/page.tsx).
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 

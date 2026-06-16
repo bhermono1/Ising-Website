@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   description: "Browse our private karaoke rooms — capacity, hourly pricing, and amenities for every group size.",
 };
 
-export const revalidate = 60;
+// See app/page.tsx (home) for why this is force-dynamic rather than ISR.
+export const dynamic = "force-dynamic";
 
 export default async function RoomsPage() {
   const rooms = await prisma.room.findMany({

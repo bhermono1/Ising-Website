@@ -6,7 +6,11 @@ import { FeaturedMenu } from "@/components/home/featured-menu";
 import { ReviewsSection } from "@/components/home/reviews-section";
 import { CtaSection } from "@/components/home/cta-section";
 
-export const revalidate = 60;
+// Rendered per-request rather than via ISR: this content is admin-editable
+// at any time, and ISR's `revalidate` forces Next.js to run this page's
+// Prisma queries at *build* time too, which fails the whole build if the
+// database isn't reachable from the build environment.
+export const dynamic = "force-dynamic";
 
 async function getHomeData() {
   const [rooms, menuItems, reviews, heroImages] = await Promise.all([

@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/utils";
 
-export const revalidate = 60;
+// See app/page.tsx (home) for why this is force-dynamic rather than ISR.
+export const dynamic = "force-dynamic";
 
 async function getRoom(slug: string) {
   return prisma.room.findUnique({
