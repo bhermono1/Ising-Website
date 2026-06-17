@@ -9,7 +9,7 @@ export function Hero({ images }: { images: string[] }) {
     <section className="relative overflow-hidden bg-background">
       <div className="bg-grid absolute inset-0 opacity-40" />
       <div className="absolute -left-32 top-10 h-72 w-72 rounded-full bg-primary/25 blur-[100px]" />
-      <div className="absolute -right-32 top-40 h-72 w-72 rounded-full bg-secondary/20 blur-[100px]" />
+      <div className="absolute -right-32 top-40 h-72 w-72 rounded-full bg-secondary/30 blur-[100px]" />
 
       <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:py-28 lg:px-8">
         <div className="animate-fade-up">

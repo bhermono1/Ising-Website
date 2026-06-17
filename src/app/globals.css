@@ -11,16 +11,16 @@
   --color-muted: #1c1830;
   --color-muted-foreground: #9b96b3;
 
-  --color-primary: #ff2d78;
+  --color-primary: #d91b8c;
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: #00e5ff;
-  --color-secondary-foreground: #06121a;
+  --color-secondary: #5443a7;
+  --color-secondary-foreground: #ffffff;
 
   --color-accent: #e8b94b;
   --color-accent-foreground: #1a1306;
 
-  --color-violet: #7c3aed;
+  --color-violet: #5443a7;
 
   --color-destructive: #ff5470;
   --color-destructive-foreground: #ffffff;
@@ -28,14 +28,14 @@
   --color-success: #34d399;
   --color-success-foreground: #052e22;
 
-  --color-ring: #ff2d78;
+  --color-ring: #d91b8c;
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-playfair), ui-serif, Georgia, serif;
   --font-neon: var(--font-monoton), cursive;
 
-  --shadow-neon-pink: 0 0 8px rgba(255,45,120,0.55), 0 0 32px rgba(255,45,120,0.25);
-  --shadow-neon-cyan: 0 0 8px rgba(0,229,255,0.55), 0 0 32px rgba(0,229,255,0.25);
+  --shadow-neon-pink: 0 0 8px rgba(217,27,140,0.55), 0 0 32px rgba(217,27,140,0.25);
+  --shadow-neon-purple: 0 0 8px rgba(84,67,167,0.55), 0 0 32px rgba(84,67,167,0.25);
   --shadow-neon-gold: 0 0 8px rgba(232,185,75,0.5), 0 0 28px rgba(232,185,75,0.2);
 
   --animate-fade-up: fade-up 0.7s ease-out forwards;
@@ -89,9 +89,9 @@
     color: var(--color-primary);
     text-shadow: var(--shadow-neon-pink);
   }
-  .text-neon-cyan {
+  .text-neon-purple {
     color: var(--color-secondary);
-    text-shadow: var(--shadow-neon-cyan);
+    text-shadow: var(--shadow-neon-purple);
   }
   .text-balance {
     text-wrap: balance;

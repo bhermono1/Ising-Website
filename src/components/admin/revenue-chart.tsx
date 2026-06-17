@@ -19,8 +19,8 @@ export function DailyRevenueChart({ data }: { data: { date: string; amount: numb
       <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
         <defs>
           <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ff2d78" stopOpacity={0.5} />
-            <stop offset="100%" stopColor="#ff2d78" stopOpacity={0} />
+            <stop offset="0%" stopColor="#d91b8c" stopOpacity={0.5} />
+            <stop offset="100%" stopColor="#d91b8c" stopOpacity={0} />
           </linearGradient>
         </defs>
         <CartesianGrid strokeDasharray="3 3" stroke="#2a2640" vertical={false} />
@@ -34,7 +34,7 @@ export function DailyRevenueChart({ data }: { data: { date: string; amount: numb
         />
         <YAxis stroke="#9b96b3" fontSize={11} tickLine={false} axisLine={false} width={50} />
         <Tooltip content={<ChartTooltip />} />
-        <Area type="monotone" dataKey="amount" stroke="#ff2d78" strokeWidth={2} fill="url(#revenueFill)" />
+        <Area type="monotone" dataKey="amount" stroke="#d91b8c" strokeWidth={2} fill="url(#revenueFill)" />
       </AreaChart>
     </ResponsiveContainer>
   );
@@ -48,7 +48,7 @@ export function MonthlyRevenueChart({ data }: { data: { month: string; amount: n
         <XAxis dataKey="month" stroke="#9b96b3" fontSize={11} tickLine={false} axisLine={false} />
         <YAxis stroke="#9b96b3" fontSize={11} tickLine={false} axisLine={false} width={50} />
         <Tooltip content={<ChartTooltip />} />
-        <Bar dataKey="amount" fill="#00e5ff" radius={[6, 6, 0, 0]} />
+        <Bar dataKey="amount" fill="#5443a7" radius={[6, 6, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );
