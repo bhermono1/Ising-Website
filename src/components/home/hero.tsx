@@ -38,7 +38,7 @@ export function Hero({ images }: { images: string[] }) {
 
         <div className="relative grid grid-cols-2 gap-4 animate-fade-up [animation-delay:150ms]">
           <div className="relative col-span-2 h-56 overflow-hidden rounded-3xl border border-border shadow-[0_0_40px_rgba(255,45,120,0.15)] sm:h-64">
-            {images[0] && <Image src={images[0]} alt="Karaoke room" fill sizes="600px" className="object-cover" priority />}
+            {images[0] && <Image src={images[0]} alt="Karaoke room" fill sizes="600px" className="object-cover" priority loading="eager" />}
           </div>
           <div className="relative h-40 overflow-hidden rounded-3xl border border-border sm:h-48">
             {images[1] && <Image src={images[1]} alt="Karaoke room" fill sizes="300px" className="object-cover" />}

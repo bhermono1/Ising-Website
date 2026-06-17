@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X, ShoppingBag, LayoutDashboard, ShieldCheck, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BUSINESS } from "@/lib/constants";
@@ -34,6 +34,11 @@ export function Navbar() {
   const { data: session } = useSession();
   const itemCount = useCart((s) => s.itemCount());
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const initials = session?.user?.name
     ? session.user.name.split(" ").map((n) => n[0]).slice(0, 2).join("")
@@ -70,7 +75,7 @@ export function Navbar() {
             <Button variant="ghost" size="icon" aria-label="Cart">
               <ShoppingBag className="h-4.5 w-4.5" />
             </Button>
-            {itemCount > 0 && (
+            {mounted && itemCount > 0 && (
               <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
                 {itemCount}
               </span>
