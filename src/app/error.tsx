@@ -19,6 +19,9 @@ export default function ErrorBoundary({ error, reset }: { error: Error & { diges
       <p className="mt-2 text-sm text-muted-foreground">
         An unexpected error occurred. You can try again, or head back to the home page.
       </p>
+      <pre className="mt-4 max-w-sm overflow-auto rounded bg-surface-2 p-3 text-left text-xs text-destructive">
+        {error?.message}{"\n"}{error?.stack}
+      </pre>
       <div className="mt-8 flex gap-3">
         <Button variant="outline" onClick={reset}>
           Try again
