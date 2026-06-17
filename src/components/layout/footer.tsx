@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AtSign, MapPin, Phone } from "lucide-react";
 import { BUSINESS } from "@/lib/constants";
+import { ISingLogo } from "@/components/layout/logo";
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <span className="font-neon text-xl text-primary">{BUSINESS.shortName}</span>
+            <ISingLogo className="h-12 w-auto" />
             <p className="mt-3 max-w-xs text-sm text-muted-foreground">{BUSINESS.tagline}</p>
             <a
               href={BUSINESS.instagram}
