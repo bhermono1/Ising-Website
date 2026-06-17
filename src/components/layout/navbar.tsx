@@ -46,10 +46,10 @@ export function Navbar() {
     : "U";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md print:hidden">
+    <header className="sticky top-0 z-40 border-b border-[#e8e0d0] bg-[#faf7f2] print:hidden">
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center">
-          <ISingLogo className="h-14 w-auto" />
+          <ISingLogo className="h-16" />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -58,7 +58,7 @@ export function Navbar() {
               key={link.href}
               href={link.href}
               className={cn(
-                "text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
+                "text-sm font-medium text-[#4a4060] transition-colors hover:text-primary",
                 pathname === link.href && "text-primary"
               )}
             >
@@ -128,7 +128,7 @@ export function Navbar() {
           )}
 
           <button
-            className="ml-1 flex h-10 w-10 items-center justify-center rounded-full text-foreground md:hidden cursor-pointer"
+            className="ml-1 flex h-10 w-10 items-center justify-center rounded-full text-[#4a4060] md:hidden cursor-pointer"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
@@ -138,14 +138,14 @@ export function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-border bg-background px-4 py-4 md:hidden">
+        <div className="border-t border-[#e8e0d0] bg-[#faf7f2] px-4 py-4 md:hidden">
           <div className="flex flex-col gap-3">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-[#4a4060] hover:bg-[#f0e8dc]"
               >
                 {link.label}
               </Link>
