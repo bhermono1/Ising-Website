@@ -125,19 +125,19 @@ async function main() {
   const allRooms = await prisma.room.findMany();
 
   const categories: { name: string; slug: string; type: "FOOD" | "DRINK"; position: number }[] = [
-    { name: "Small Plates", slug: "small-plates", type: "FOOD", position: 0 },
-    { name: "Shareable Mains", slug: "shareable-mains", type: "FOOD", position: 1 },
-    { name: "Sweet Endings", slug: "sweet-endings", type: "FOOD", position: 2 },
-    { name: "Signature Cocktails", slug: "signature-cocktails", type: "DRINK", position: 0 },
-    { name: "Beer & Wine", slug: "beer-wine", type: "DRINK", position: 1 },
-    { name: "Non-Alcoholic", slug: "non-alcoholic", type: "DRINK", position: 2 },
+    { name: "Appetizers", slug: "appetizers", type: "FOOD", position: 0 },
+    { name: "Entrées", slug: "entrees", type: "FOOD", position: 1 },
+    { name: "This Month's Special", slug: "specials", type: "FOOD", position: 2 },
+    { name: "Desserts", slug: "desserts", type: "FOOD", position: 3 },
+    { name: "Party Trays", slug: "party-trays", type: "FOOD", position: 4 },
+    { name: "Beverages", slug: "beverages", type: "DRINK", position: 0 },
   ];
 
   const categoryRecords: Record<string, string> = {};
   for (const cat of categories) {
     const record = await prisma.menuCategory.upsert({
       where: { slug: cat.slug },
-      update: {},
+      update: { name: cat.name, type: cat.type, position: cat.position },
       create: cat,
     });
     categoryRecords[cat.slug] = record.id;
@@ -152,121 +152,167 @@ async function main() {
     allergens?: string[];
     seed: string;
   }[] = [
+    // Appetizers
     {
-      categorySlug: "small-plates",
-      name: "Truffle Karaage Wings",
-      description: "Crispy Japanese fried chicken wings tossed in truffle-soy glaze, scallion, sesame.",
-      price: 14,
-      isFeatured: true,
-      allergens: ["soy", "sesame"],
-      seed: "wings",
+      categorySlug: "appetizers",
+      name: "Garlic Fries",
+      description: "Crispy fries tossed in garlic.",
+      price: 4.50,
+      seed: "garlic-fries",
     },
     {
-      categorySlug: "small-plates",
-      name: "Loaded Kimchi Fries",
-      description: "Crispy fries, melted cheese curd, kimchi, spicy mayo, scallions.",
-      price: 12,
-      allergens: ["dairy"],
-      seed: "fries",
-    },
-    {
-      categorySlug: "small-plates",
-      name: "Edamame & Chili Salt",
-      description: "Steamed edamame tossed with togarashi chili salt and lime.",
-      price: 8,
-      allergens: ["soy"],
-      seed: "edamame",
-    },
-    {
-      categorySlug: "shareable-mains",
-      name: "K-BBQ Slider Trio",
-      description: "Bulgogi beef, gochujang glaze, pickled slaw, brioche buns.",
-      price: 18,
-      isFeatured: true,
+      categorySlug: "appetizers",
+      name: "Fried Gyoza (6 pcs)",
+      description: "Pan-fried gyoza dumplings, 6 pieces.",
+      price: 6.50,
       allergens: ["gluten", "soy"],
-      seed: "sliders",
+      seed: "gyoza-6",
     },
     {
-      categorySlug: "shareable-mains",
-      name: "Spicy Tuna Nachos",
-      description: "Wonton chips, spicy tuna, avocado crema, jalapeño, sriracha drizzle.",
-      price: 19,
-      allergens: ["fish", "gluten"],
-      seed: "nachos",
+      categorySlug: "appetizers",
+      name: "Fried Gyoza (12 pcs)",
+      description: "Pan-fried gyoza dumplings, 12 pieces.",
+      price: 11.50,
+      allergens: ["gluten", "soy"],
+      seed: "gyoza-12",
     },
     {
-      categorySlug: "shareable-mains",
-      name: "Truffle Mushroom Flatbread",
-      description: "Wild mushroom, mozzarella, truffle oil, arugula, parmesan.",
-      price: 16,
+      categorySlug: "appetizers",
+      name: "Side Noodle",
+      description: "A side serving of noodles.",
+      price: 8.50,
+      allergens: ["gluten"],
+      seed: "side-noodle",
+    },
+    {
+      categorySlug: "appetizers",
+      name: "Chicken Karaage",
+      description: "Japanese-style crispy fried chicken.",
+      price: 8.50,
+      isFeatured: true,
+      seed: "chicken-karaage",
+    },
+    // Entrées
+    {
+      categorySlug: "entrees",
+      name: "Grilled Chicken Plate",
+      description: "Grilled chicken served with rice and mixed vegetables.",
+      price: 13.50,
+      seed: "grilled-chicken",
+    },
+    {
+      categorySlug: "entrees",
+      name: "Grilled Beef Plate",
+      description: "Grilled beef served with rice and mixed vegetables.",
+      price: 15.50,
+      seed: "grilled-beef",
+    },
+    {
+      categorySlug: "entrees",
+      name: "Chicken Katsu Plate",
+      description: "Breaded and fried chicken katsu served with rice and mixed vegetables.",
+      price: 13.50,
+      isFeatured: true,
+      seed: "chicken-katsu",
+    },
+    {
+      categorySlug: "entrees",
+      name: "Beef Katsu Plate",
+      description: "Breaded and fried beef katsu served with rice and mixed vegetables.",
+      price: 15.50,
+      seed: "beef-katsu",
+    },
+    // This Month's Special
+    {
+      categorySlug: "specials",
+      name: "Pepper Beef",
+      description: "Savory pepper beef served with rice and mixed vegetables.",
+      price: 15.50,
+      isFeatured: true,
+      seed: "pepper-beef",
+    },
+    // Desserts
+    {
+      categorySlug: "desserts",
+      name: "Taiyaki Soft Serve",
+      description: "Fish-shaped waffle cone filled with soft serve. Available in Matcha, Chocolate, or Mixed. Served in cup or cone.",
+      price: 5.50,
+      isFeatured: true,
+      seed: "taiyaki",
+    },
+    {
+      categorySlug: "desserts",
+      name: "Tiramisu",
+      description: "Homemade classic Italian tiramisu.",
+      price: 6.50,
       allergens: ["dairy", "gluten"],
-      seed: "flatbread",
+      seed: "tiramisu",
+    },
+    // Party Trays
+    {
+      categorySlug: "party-trays",
+      name: "Party Tray (Regular)",
+      description: "French Fries, Chicken Karaage, Fried Gyoza, and Mixed Vegetables. Feeds up to 6 people.",
+      price: 65.00,
+      seed: "party-tray-regular",
     },
     {
-      categorySlug: "sweet-endings",
-      name: "Mochi Donut Tower",
-      description: "Six warm mochi donuts, matcha glaze, chocolate drizzle, powdered sugar.",
-      price: 11,
+      categorySlug: "party-trays",
+      name: "Party Tray (Large)",
+      description: "French Fries, Chicken Karaage, Fried Gyoza, and Mixed Vegetables. Feeds up to 12 people.",
+      price: 120.00,
+      seed: "party-tray-large",
+    },
+    {
+      categorySlug: "party-trays",
+      name: "Birthday Cake",
+      description: "Available upon request. Please pre-order at least 3 days prior.",
+      price: 0,
+      seed: "birthday-cake",
+    },
+    // Beverages
+    {
+      categorySlug: "beverages",
+      name: "Bottle Water",
+      description: "Chilled bottled water.",
+      price: 1.50,
+      seed: "water",
+    },
+    {
+      categorySlug: "beverages",
+      name: "Soft Drink",
+      description: "Your choice of soft drink, 22 oz.",
+      price: 2.50,
+      seed: "soft-drink",
+    },
+    {
+      categorySlug: "beverages",
+      name: "Iced Coffee",
+      description: "Classic iced coffee over ice.",
+      price: 4.50,
+      seed: "iced-coffee",
+    },
+    {
+      categorySlug: "beverages",
+      name: "Iced Espresso",
+      description: "Iced espresso sweetened with palm sugar.",
+      price: 4.50,
+      seed: "iced-espresso",
+    },
+    {
+      categorySlug: "beverages",
+      name: "Iced Matcha",
+      description: "Smooth iced matcha over ice.",
+      price: 6.50,
       isFeatured: true,
-      allergens: ["gluten", "dairy"],
-      seed: "donuts",
+      seed: "iced-matcha",
     },
     {
-      categorySlug: "sweet-endings",
-      name: "Mango Sticky Rice",
-      description: "Coconut sticky rice, fresh mango, toasted sesame.",
-      price: 9,
-      seed: "mango-rice",
-    },
-    {
-      categorySlug: "signature-cocktails",
-      name: "Neon Lychee Martini",
-      description: "Vodka, lychee liqueur, fresh lime, butterfly pea color-shift.",
-      price: 15,
-      isFeatured: true,
-      seed: "lychee-martini",
-    },
-    {
-      categorySlug: "signature-cocktails",
-      name: "Electric Mule",
-      description: "Spiced rum, ginger beer, blue curaçao, fresh lime.",
-      price: 14,
-      seed: "electric-mule",
-    },
-    {
-      categorySlug: "signature-cocktails",
-      name: "Crimson Smoke Old Fashioned",
-      description: "Bourbon, cherry bitters, smoked orange peel.",
-      price: 16,
-      seed: "old-fashioned",
-    },
-    {
-      categorySlug: "beer-wine",
-      name: "Sapporo Draft",
-      description: "Crisp Japanese lager, 20oz pour.",
-      price: 9,
-      seed: "sapporo",
-    },
-    {
-      categorySlug: "beer-wine",
-      name: "House Sparkling Rosé",
-      description: "Bright, dry, and bubbly — by the glass or bottle.",
-      price: 12,
-      seed: "rose",
-    },
-    {
-      categorySlug: "non-alcoholic",
-      name: "Yuzu Spritz",
-      description: "Yuzu, soda, mint, a splash of grenadine.",
-      price: 7,
-      seed: "yuzu-spritz",
-    },
-    {
-      categorySlug: "non-alcoholic",
-      name: "Thai Iced Tea",
-      description: "Classic spiced black tea, condensed milk, over ice.",
-      price: 6,
-      seed: "thai-tea",
+      categorySlug: "beverages",
+      name: "Iced Matcha w/ Fresh Strawberry",
+      description: "Smooth iced matcha topped with fresh strawberry.",
+      price: 6.50,
+      seed: "iced-matcha-strawberry",
     },
   ];
 
@@ -309,7 +355,7 @@ async function main() {
   console.log("Seed complete:");
   console.log(`  Admin login:    admin@crescendokaraoke.com / Admin1234!`);
   console.log(`  Customer login: customer@example.com / Customer1234!`);
-  console.log(`  Rooms: ${allRooms.length}, Categories: ${categories.length}, Items: ${items.length}`);
+  console.log(`  Rooms: ${allRooms.length}, Menu categories: ${categories.length}, Menu items: ${items.length}`);
   void admin;
 }
 
