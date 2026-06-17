@@ -2,11 +2,11 @@ export const BUSINESS = {
   name: "I-Sing Karaoke",
   shortName: "I-Sing",
   tagline: "Private rooms. Big sound. Bottomless nights.",
-  phone: "+1 (555) 010-2024",
-  email: "hello@crescendokaraoke.com",
-  address: "488 Neon Alley, Los Angeles, CA 90012",
-  hours: "Mon–Thu 4pm–1am · Fri–Sun 2pm–3am",
-  instagram: "https://instagram.com/crescendokaraoke",
+  phone: "+1 (559) XXX-XXXX",
+  email: "hello@ising.karaokecafe.com",
+  address: "130 W Shaw Avenue, Clovis, CA 93612",
+  hours: "Mon–Thu 4:30pm–10pm · Fri–Sat 12pm–11pm · Sun 12pm–9pm",
+  instagram: "https://www.instagram.com/ising.karaokecafe/",
 } as const;
 
 export const TIME_SLOT_INTERVAL_MINUTES = 30;
