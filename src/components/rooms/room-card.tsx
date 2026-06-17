@@ -11,7 +11,7 @@ export type RoomCardData = {
   name: string;
   slug: string;
   capacity: number;
-  pricePerHour: number | string;
+  weekdayRatePerPerson: number | string;
   amenities: string[];
   images: { url: string; alt: string }[];
 };
@@ -35,7 +35,7 @@ export function RoomCard({ room, priority = false }: { room: RoomCardData; prior
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/10 to-transparent" />
           <Badge variant="primary" className="absolute left-4 top-4">
-            {formatCurrency(room.pricePerHour)}/hr
+            from {formatCurrency(room.weekdayRatePerPerson)}/person
           </Badge>
         </div>
       </Link>

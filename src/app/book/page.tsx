@@ -23,7 +23,8 @@ async function BookingWizardServer({ prefill }: { prefill: BookingPrefill }) {
         slug: r.slug,
         name: r.name,
         capacity: r.capacity,
-        pricePerHour: r.pricePerHour.toString(),
+        weekdayRatePerPerson: r.weekdayRatePerPerson.toString(),
+        weekendRatePerPerson: r.weekendRatePerPerson.toString(),
         minDuration: r.minDuration,
         maxDuration: r.maxDuration,
       }))}

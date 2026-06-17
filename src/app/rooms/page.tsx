@@ -47,7 +47,7 @@ export default async function RoomsPage() {
                 name: room.name,
                 slug: room.slug,
                 capacity: room.capacity,
-                pricePerHour: room.pricePerHour.toString(),
+                weekdayRatePerPerson: room.weekdayRatePerPerson.toString(),
                 amenities: room.amenities,
                 images: room.images,
               }}

@@ -16,7 +16,7 @@ async function getHomeData() {
   const [rooms, menuItems, reviews, heroImages] = await Promise.all([
     prisma.room.findMany({
       where: { isActive: true },
-      orderBy: { pricePerHour: "desc" },
+      orderBy: { capacity: "asc" },
       take: 3,
       include: { images: { orderBy: { position: "asc" }, take: 1 } },
     }),
@@ -50,7 +50,7 @@ export default async function HomePage() {
           name: r.name,
           slug: r.slug,
           capacity: r.capacity,
-          pricePerHour: r.pricePerHour.toString(),
+          weekdayRatePerPerson: r.weekdayRatePerPerson.toString(),
           amenities: r.amenities,
           images: r.images,
         }))}

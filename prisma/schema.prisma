@@ -108,7 +108,8 @@ model Room {
   slug         String   @unique
   description  String   @db.Text
   capacity     Int
-  pricePerHour Decimal  @db.Decimal(10, 2)
+  weekdayRatePerPerson Decimal @db.Decimal(10, 2)
+  weekendRatePerPerson Decimal @db.Decimal(10, 2)
   amenities    String[] @default([])
   isActive     Boolean  @default(true)
   /// minutes; bookings must be a multiple of this

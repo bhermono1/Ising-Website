@@ -17,7 +17,8 @@ type AdminRoom = {
   name: string;
   description: string;
   capacity: number;
-  pricePerHour: string;
+  weekdayRatePerPerson: string;
+  weekendRatePerPerson: string;
   amenities: string[];
   minDuration: number;
   maxDuration: number;
@@ -53,7 +54,8 @@ export default function AdminRoomsPage() {
       name: room.name,
       description: room.description,
       capacity: room.capacity,
-      pricePerHour: Number(room.pricePerHour),
+      weekdayRatePerPerson: Number(room.weekdayRatePerPerson),
+      weekendRatePerPerson: Number(room.weekendRatePerPerson),
       amenities: room.amenities,
       minDuration: room.minDuration,
       maxDuration: room.maxDuration,
@@ -106,7 +108,7 @@ export default function AdminRoomsPage() {
                   <Badge variant={room.isActive ? "success" : "outline"}>{room.isActive ? "Active" : "Inactive"}</Badge>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  {formatCurrency(room.pricePerHour)}/hr · up to {room.capacity} guests · {room._count.reservations} bookings
+                  {formatCurrency(room.weekdayRatePerPerson)}/{formatCurrency(room.weekendRatePerPerson)} per person · up to {room.capacity} guests · {room._count.reservations} bookings
                 </p>
               </div>
               <Button variant="ghost" size="icon" onClick={() => openEdit(room)} aria-label="Edit">

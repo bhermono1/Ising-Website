@@ -97,10 +97,11 @@ export default async function RoomDetailPage({ params }: { params: Promise<{ slu
 
         <div>
           <Card className="sticky top-24 p-6">
-            <p className="text-sm text-muted-foreground">Starting at</p>
-            <p className="font-display text-3xl text-foreground">
-              {formatCurrency(room.pricePerHour)}<span className="text-base text-muted-foreground">/hour</span>
+            <p className="text-sm text-muted-foreground">Admission</p>
+            <p className="font-display text-2xl text-foreground">
+              {formatCurrency(room.weekdayRatePerPerson)}<span className="text-base text-muted-foreground">/person·hr</span>
             </p>
+            <p className="mt-1 text-xs text-muted-foreground">Mon–Thu · {formatCurrency(room.weekendRatePerPerson)}/person·hr Fri–Sun</p>
             <Button size="lg" className="mt-6 w-full" asChild>
               <Link href={`/book?room=${room.slug}`}>
                 <CalendarCheck className="h-4 w-4" /> Book this room

@@ -21,7 +21,8 @@ export type BookableRoom = {
   slug: string;
   name: string;
   capacity: number;
-  pricePerHour: string;
+  weekdayRatePerPerson: string;
+  weekendRatePerPerson: string;
   minDuration: number;
   maxDuration: number;
 };
@@ -94,7 +95,9 @@ export function BookingWizard({ rooms, prefill }: { rooms: BookableRoom[]; prefi
     staleTime: 5 * 60 * 1000,
   });
 
-  const totalAmount = room ? (Number(room.pricePerHour) * duration) / 60 : 0;
+  const isWeekend = [0, 5, 6].includes(new Date(date + "T00:00:00").getDay());
+  const ratePerPerson = room ? Number(isWeekend ? room.weekendRatePerPerson : room.weekdayRatePerPerson) : 0;
+  const totalAmount = ratePerPerson * guestCount * (duration / 60);
   const depositAmount = siteSettings
     ? Math.max((totalAmount * Number(siteSettings.depositPercentage)) / 100, Number(siteSettings.minDepositAmount))
     : null;
@@ -167,7 +170,7 @@ export function BookingWizard({ rooms, prefill }: { rooms: BookableRoom[]; prefi
             <SelectContent>
               {rooms.map((r) => (
                 <SelectItem key={r.id} value={r.id}>
-                  {r.name} · up to {r.capacity} guests · {formatCurrency(r.pricePerHour)}/hr
+                  {r.name} · up to {r.capacity} guests · from {formatCurrency(r.weekdayRatePerPerson)}/person
                 </SelectItem>
               ))}
             </SelectContent>

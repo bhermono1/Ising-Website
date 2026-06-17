@@ -15,7 +15,8 @@ export type RoomFormValues = {
   name: string;
   description: string;
   capacity: number;
-  pricePerHour: number;
+  weekdayRatePerPerson: number;
+  weekendRatePerPerson: number;
   amenities: string[];
   minDuration: number;
   maxDuration: number;
@@ -29,7 +30,8 @@ const EMPTY: RoomFormValues = {
   name: "",
   description: "",
   capacity: 8,
-  pricePerHour: 50,
+  weekdayRatePerPerson: 7.50,
+  weekendRatePerPerson: 9.50,
   amenities: [],
   minDuration: 60,
   maxDuration: 240,
@@ -61,7 +63,8 @@ export function RoomForm({ initial, onSaved }: { initial?: RoomFormValues; onSav
       name: values.name,
       description: values.description,
       capacity: values.capacity,
-      pricePerHour: values.pricePerHour,
+      weekdayRatePerPerson: values.weekdayRatePerPerson,
+      weekendRatePerPerson: values.weekendRatePerPerson,
       amenities,
       minDuration: values.minDuration,
       maxDuration: values.maxDuration,
@@ -98,14 +101,18 @@ export function RoomForm({ initial, onSaved }: { initial?: RoomFormValues; onSav
         <Label htmlFor="description">Description</Label>
         <Textarea id="description" required rows={3} value={values.description} onChange={(e) => set("description", e.target.value)} />
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
         <div>
           <Label htmlFor="capacity">Capacity</Label>
           <Input id="capacity" type="number" min={1} required value={values.capacity} onChange={(e) => set("capacity", Number(e.target.value))} />
         </div>
         <div>
-          <Label htmlFor="price">Price / hour ($)</Label>
-          <Input id="price" type="number" min={0} step="0.01" required value={values.pricePerHour} onChange={(e) => set("pricePerHour", Number(e.target.value))} />
+          <Label htmlFor="weekdayRate">Weekday ($/person/hr)</Label>
+          <Input id="weekdayRate" type="number" min={0} step="0.01" required value={values.weekdayRatePerPerson} onChange={(e) => set("weekdayRatePerPerson", Number(e.target.value))} />
+        </div>
+        <div>
+          <Label htmlFor="weekendRate">Weekend ($/person/hr)</Label>
+          <Input id="weekendRate" type="number" min={0} step="0.01" required value={values.weekendRatePerPerson} onChange={(e) => set("weekendRatePerPerson", Number(e.target.value))} />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">

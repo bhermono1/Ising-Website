@@ -54,7 +54,8 @@ export async function GET(req: Request) {
       openTime: room.openTime,
       closeTime: room.closeTime,
       capacity: room.capacity,
-      pricePerHour: room.pricePerHour.toString(),
+      weekdayRatePerPerson: room.weekdayRatePerPerson.toString(),
+      weekendRatePerPerson: room.weekendRatePerPerson.toString(),
     },
   });
 }

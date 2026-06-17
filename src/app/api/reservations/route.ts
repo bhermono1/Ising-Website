@@ -88,7 +88,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: precheck.reason }, { status: 409 });
   }
 
-  const totalAmount = (Number(room.pricePerHour) * durationMinutes) / 60;
+  const dayOfWeek = new Date(`${dateStr}T00:00:00`).getDay();
+  const isWeekend = dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6;
+  const ratePerPerson = Number(isWeekend ? room.weekendRatePerPerson : room.weekdayRatePerPerson);
+  const totalAmount = ratePerPerson * guestCount * (durationMinutes / 60);
   const depositAmount = computeDeposit(totalAmount, settings);
 
   // Create the PaymentIntent before writing the reservation: if Stripe fails, nothing
