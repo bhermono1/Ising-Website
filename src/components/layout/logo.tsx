@@ -1,16 +1,8 @@
-import Image from "next/image";
-
 export function ISingLogo({ className }: { className?: string }) {
   return (
     <div className={`flex items-center gap-2 ${className ?? ""}`}>
-      <Image
-        src="/mic.png"
-        alt=""
-        width={80}
-        height={80}
-        className="h-14 w-auto object-contain"
-        priority
-      />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/mic.png" alt="" className="h-14 w-auto" />
       <svg
         viewBox="0 0 148 64"
         fill="none"
