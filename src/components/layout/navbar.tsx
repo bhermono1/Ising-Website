@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Menu, X, ShoppingBag, LayoutDashboard, ShieldCheck, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BUSINESS } from "@/lib/constants";
+import { ISingLogo } from "@/components/layout/logo";
 import { useCart } from "@/hooks/use-cart";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -47,16 +47,9 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md print:hidden">
-      <nav className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.png"
-            alt={BUSINESS.name}
-            width={160}
-            height={54}
-            className="h-11 w-auto rounded-xl bg-[#ede8e0] px-2.5 py-1"
-            priority
-          />
+          <ISingLogo className="h-10 w-auto" />
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
