@@ -8,14 +8,14 @@ export function ISingLogo({ className }: { className?: string }) {
         alt=""
         width={80}
         height={80}
-        className="h-full w-auto object-contain"
+        className="h-14 w-auto object-contain"
         priority
       />
       <svg
         viewBox="0 0 148 64"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-full w-auto"
+        className="h-10 w-auto"
         aria-label="i-Sing Karaoke & Café"
       >
         <text
