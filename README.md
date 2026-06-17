@@ -1,4 +1,4 @@
-# Crescendo Karaoke Lounge
+# I-Sing Karaoke
 
 A production-ready full-stack web platform for a private-karaoke-room restaurant/bar business: customers browse rooms, book a private room with a paid deposit, and order food/drinks online; admins manage rooms, the menu, reservations, orders, and view revenue analytics.
 

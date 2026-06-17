@@ -1,6 +1,6 @@
 export const BUSINESS = {
-  name: "Crescendo Karaoke Lounge",
-  shortName: "Crescendo",
+  name: "I-Sing Karaoke",
+  shortName: "I-Sing",
   tagline: "Private rooms. Big sound. Bottomless nights.",
   phone: "+1 (555) 010-2024",
   email: "hello@crescendokaraoke.com",
